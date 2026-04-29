@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/nav_transform"
-        android:name="com.basico91.trabajopractico4.ui.transform.TransformFragment"
+        android:name="com.basico91.trabajopractico4.ProductosFragment"
         android:label="@string/menu_transform"
         tools:layout="@layout/fragment_productos" />
 
@@ -28,4 +28,9 @@
         android:name="com.basico91.trabajopractico4.ui.settings.SettingsFragment"
         android:label="@string/menu_settings"
         tools:layout="@layout/fragment_settings" />
+    <fragment
+        android:id="@+id/nav_cargar"
+        android:name="com.basico91.trabajopractico4.CargarFragment"
+        android:label="fragment_cargar"
+        tools:layout="@layout/fragment_cargar" />
 </navigation>

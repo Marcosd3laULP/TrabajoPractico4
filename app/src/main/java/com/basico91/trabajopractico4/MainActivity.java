@@ -33,31 +33,40 @@ public class MainActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         setSupportActionBar(binding.appBarMain.toolbar);
-        if (binding.appBarMain.fab != null) {
-            binding.appBarMain.fab.setOnClickListener(view -> Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).setAnchorView(R.id.fab).show());
-        }
+
         NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment_content_main);
         assert navHostFragment != null;
         NavController navController = navHostFragment.getNavController();
 
-        NavigationView navigationView = binding.navView;
-        if (navigationView != null) {
-            mAppBarConfiguration = new AppBarConfiguration.Builder(
-                    R.id.nav_transform, R.id.nav_reflow, R.id.nav_slideshow, R.id.nav_settings)
-                    .setOpenableLayout(binding.drawerLayout)
-                    .build();
+        // 1. Configuración UNIFICADA de la AppBar
+        // Ponemos todos los IDs que son destinos principales (incluyendo los del BottomNav y el de Cargar)
+        mAppBarConfiguration = new AppBarConfiguration.Builder(
+                R.id.nav_transform, R.id.nav_reflow, R.id.nav_slideshow, R.id.nav_settings, R.id.nav_cargar)
+                .setOpenableLayout(binding.drawerLayout) // ESTA LÍNEA ES VITAL
+                .build();
+
+        // 2. Configurar el Drawer
+        if (binding.navView != null) {
             NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
-            NavigationUI.setupWithNavController(navigationView, navController);
+            NavigationUI.setupWithNavController(binding.navView, navController);
+
+            // MANEJAR EL BOTÓN SALIR
+            binding.navView.setNavigationItemSelectedListener(item -> {
+                if (item.getItemId() == R.id.nav_salir) {
+                    mostrarDialogoSalir();
+                } else {
+                    // Navegación normal para los otros items
+                    NavigationUI.onNavDestinationSelected(item, navController);
+                    binding.drawerLayout.closeDrawers();
+                }
+                return true;
+            });
         }
 
-        BottomNavigationView bottomNavigationView = binding.appBarMain.contentMain.bottomNavView;
-        if (bottomNavigationView != null) {
-            mAppBarConfiguration = new AppBarConfiguration.Builder(
-                    R.id.nav_transform, R.id.nav_reflow, R.id.nav_slideshow)
-                    .build();
+        // 3. Configurar el BottomNav (si existe en el layout actual)
+        if (binding.appBarMain.contentMain.bottomNavView != null) {
             NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
-            NavigationUI.setupWithNavController(bottomNavigationView, navController);
+            NavigationUI.setupWithNavController(binding.appBarMain.contentMain.bottomNavView, navController);
         }
     }
 
@@ -89,5 +98,15 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
         return NavigationUI.navigateUp(navController, mAppBarConfiguration)
                 || super.onSupportNavigateUp();
+    }
+
+    private void mostrarDialogoSalir() {
+        new androidx.appcompat.app.AlertDialog.Builder(this)
+                .setTitle("Salir")
+                .setMessage("¿Deseas cerrar la aplicación?")
+                .setCancelable(false)
+                .setPositiveButton("Sí", (dialog, which) -> finish())
+                .setNegativeButton("No", (dialog, which) -> dialog.dismiss())
+                .show();
     }
 }
