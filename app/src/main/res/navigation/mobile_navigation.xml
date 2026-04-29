@@ -9,7 +9,7 @@
         android:id="@+id/nav_transform"
         android:name="com.basico91.trabajopractico4.ui.transform.TransformFragment"
         android:label="@string/menu_transform"
-        tools:layout="@layout/fragment_transform" />
+        tools:layout="@layout/fragment_productos" />
 
     <fragment
         android:id="@+id/nav_reflow"
