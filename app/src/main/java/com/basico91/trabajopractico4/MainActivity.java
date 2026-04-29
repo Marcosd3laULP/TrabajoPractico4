@@ -18,8 +18,11 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.basico91.trabajopractico4.databinding.ActivityMainBinding;
 
+import java.util.ArrayList;
+
 public class MainActivity extends AppCompatActivity {
 
+    public static ArrayList<Producto> listaProductos = new ArrayList<>();
     private AppBarConfiguration mAppBarConfiguration;
 
     @Override
