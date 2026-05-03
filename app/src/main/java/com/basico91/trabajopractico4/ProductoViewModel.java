@@ -30,18 +30,25 @@ public class ProductoViewModel extends AndroidViewModel {
     }
 
     public String guardarProducto(String code, String descri, String price){
-        if(code == null && code.isEmpty()){
+        if(code.isEmpty() || descri.isEmpty() || price.isEmpty()){
         return "Debe completar todos los campos";
         }
             int codigo = Integer.parseInt(code);
             double precio = Double.parseDouble(price);
 
+            if(codigo < 0) {
+                return "El codigo no puede ser negativo";
+            }
+            if(precio < 0){
+                return "El precio no puede ser negativo";
+            }
         for(Producto p : MainActivity.listaProductos){
             if(p.getCodigo() == codigo){
                 return "El codigo ya existe";
             }
         }
         MainActivity.listaProductos.add(new Producto(codigo, descri, precio));
+        ordenarProductos();
         return "ok";
     }
 

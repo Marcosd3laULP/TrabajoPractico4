@@ -1,38 +1,44 @@
-<?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="100dp">
-
-    <TextView
-        android:id="@+id/tvCod"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="1dp"
-        android:text="Codigo"
-        app:layout_constraintBottom_toTopOf="@+id/tvPrecio"
-        app:layout_constraintTop_toBottomOf="@+id/tvDesc"
-        tools:layout_editor_absoluteX="0dp" />
-
-    <TextView
-        android:id="@+id/tvPrecio"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="1dp"
-        android:layout_marginBottom="20dp"
-        android:text="Precio"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvCod"
-        tools:layout_editor_absoluteX="13dp" />
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    android:background="#FFEB#3B"
+    android:padding="8dp">
 
     <TextView
         android:id="@+id/tvDesc"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="22dp"
         android:text="Descripcion"
-        app:layout_constraintBottom_toTopOf="@+id/tvCod"
+        android:textColor="#4CAF50"
+        android:textStyle="bold"
+        android:textSize="18sp"
         app:layout_constraintTop_toTopOf="parent"
-        tools:layout_editor_absoluteX="16dp" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <TextView
+        android:id="@+id/tvCodigo"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Codigo"
+        android:textColor="#4CAF50"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@+id/tvDesc"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <TextView
+        android:id="@+id/tvPrecio"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Precio"
+        android:textColor="#4CAF50"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@+id/tvCodigo"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -31,7 +31,7 @@ public class ProductoAdapter extends RecyclerView.Adapter<ProductoAdapter.Produc
         Producto producto = listaProductos.get(position);
 
         holder.binding.tvDesc.setText((producto.getDescripcion()));
-        holder.binding.tvCod.setText("Cod: " + producto.getCodigo());
+        holder.binding.tvCodigo.setText("Cod: " + producto.getCodigo());
         holder.binding.tvPrecio.setText("Precio: $" + producto.getPrecio());
     }
 
