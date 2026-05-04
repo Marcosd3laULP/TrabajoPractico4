@@ -9,6 +9,7 @@ import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
@@ -22,6 +23,7 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
+    private MainActivityViewModel vm;
     public static ArrayList<Producto> listaProductos = new ArrayList<>();
     private AppBarConfiguration mAppBarConfiguration;
 
@@ -32,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
         ActivityMainBinding binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        vm = ViewModelProvider.AndroidViewModelFactory.getInstance(getApplication()).create(MainActivityViewModel.class);
         setSupportActionBar(binding.appBarMain.toolbar);
 
         NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment_content_main);
@@ -45,46 +48,37 @@ public class MainActivity extends AppCompatActivity {
                 .setOpenableLayout(binding.drawerLayout) // ESTA LÍNEA ES VITAL
                 .build();
 
-        // 2. Configurar el Drawer
-        if (binding.navView != null) {
-            NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
-            NavigationUI.setupWithNavController(binding.navView, navController);
+        binding.navView.setNavigationItemSelectedListener(item -> {
+            // Le delegamos la decisión al ViewModel
+            vm.manejarSeleccionMenu(item, navController);
 
-            // MANEJAR EL BOTÓN SALIR
-            binding.navView.setNavigationItemSelectedListener(item -> {
-                if (item.getItemId() == R.id.nav_salir) {
-                    mostrarDialogoSalir();
-                } else {
-                    // Navegación normal para los otros items
-                    NavigationUI.onNavDestinationSelected(item, navController);
-                    binding.drawerLayout.closeDrawers();
-                }
-                return true;
-            });
-        }
+            // El cierre del Drawer siempre ocurre aquí porque es visual
+            binding.drawerLayout.closeDrawers();
+            return true;
+        });
 
-        // 3. Configurar el BottomNav (si existe en el layout actual)
-        if (binding.appBarMain.contentMain.bottomNavView != null) {
-            NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
-            NavigationUI.setupWithNavController(binding.appBarMain.contentMain.bottomNavView, navController);
-        }
-    }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        boolean result = super.onCreateOptionsMenu(menu);
-        // Using findViewById because NavigationView exists in different layout files
-        // between w600dp and w1240dp
-        NavigationView navView = findViewById(R.id.nav_view);
-        if (navView == null) {
-            // The navigation drawer already has the items including the items in the overflow menu
-            // We only inflate the overflow menu if the navigation drawer isn't visible
-            getMenuInflater().inflate(R.menu.overflow, menu);
-        }
-        return result;
-    }
+        vm.getEventoMostrarSalir().observe(this, mostrar -> {
+            if ((boolean) mostrar) mostrarDialogoSalir();
+        });
 
-    @Override
+
+        /*@Override
+        public boolean onCreateOptionsMenu;
+        (Menu menu){
+            boolean result = super.onCreateOptionsMenu(menu);
+            // Using findViewById because NavigationView exists in different layout files
+            // between w600dp and w1240dp
+            NavigationView navView = findViewById(R.id.nav_view);
+            if (navView == null) {
+                // The navigation drawer already has the items including the items in the overflow menu
+                // We only inflate the overflow menu if the navigation drawer isn't visible
+                getMenuInflater().inflate(R.menu.overflow, menu);
+            }
+            return result;
+        }*/
+
+    /*@Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.nav_settings) {
             NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
@@ -98,15 +92,13 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
         return NavigationUI.navigateUp(navController, mAppBarConfiguration)
                 || super.onSupportNavigateUp();
-    }
+    }*/
 
+    }
     private void mostrarDialogoSalir() {
         new androidx.appcompat.app.AlertDialog.Builder(this)
                 .setTitle("Salir")
-                .setMessage("¿Deseas cerrar la aplicación?")
-                .setCancelable(false)
-                .setPositiveButton("Sí", (dialog, which) -> finish())
-                .setNegativeButton("No", (dialog, which) -> dialog.dismiss())
+                // ... resto del código
                 .show();
     }
 }
