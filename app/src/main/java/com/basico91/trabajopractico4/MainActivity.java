@@ -41,48 +41,44 @@ public class MainActivity extends AppCompatActivity {
         assert navHostFragment != null;
         NavController navController = navHostFragment.getNavController();
 
-        // 1. Configuración UNIFICADA de la AppBar
-        // Ponemos todos los IDs que son destinos principales (incluyendo los del BottomNav y el de Cargar)
         mAppBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.nav_transform, R.id.nav_reflow, R.id.nav_slideshow, R.id.nav_settings, R.id.nav_cargar)
-                .setOpenableLayout(binding.drawerLayout) // ESTA LÍNEA ES VITAL
+                .setOpenableLayout(binding.drawerLayout)
                 .build();
 
         binding.navView.setNavigationItemSelectedListener(item -> {
-            // Le delegamos la decisión al ViewModel
             vm.manejarSeleccionMenu(item, navController);
-
-            // El cierre del Drawer siempre ocurre aquí porque es visual
             binding.drawerLayout.closeDrawers();
             return true;
         });
+        NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
+
+        NavigationUI.setupWithNavController(binding.navView, navController);
 
 
         vm.getEventoMostrarSalir().observe(this, mostrar -> {
             if ((boolean) mostrar) mostrarDialogoSalir();
         });
 
+    }
 
-        /*@Override
-        public boolean onCreateOptionsMenu;
-        (Menu menu){
-            boolean result = super.onCreateOptionsMenu(menu);
-            // Using findViewById because NavigationView exists in different layout files
-            // between w600dp and w1240dp
-            NavigationView navView = findViewById(R.id.nav_view);
-            if (navView == null) {
-                // The navigation drawer already has the items including the items in the overflow menu
-                // We only inflate the overflow menu if the navigation drawer isn't visible
-                getMenuInflater().inflate(R.menu.overflow, menu);
-            }
-            return result;
-        }*/
 
-    /*@Override
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        boolean result = super.onCreateOptionsMenu(menu);
+        NavigationView navView = findViewById(R.id.nav_view);
+        if (navView == null) {
+            getMenuInflater().inflate(R.menu.overflow, menu);
+        }
+        return result;
+    }
+
+    @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.nav_settings) {
             NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
             navController.navigate(R.id.nav_settings);
+            return true;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -92,9 +88,9 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
         return NavigationUI.navigateUp(navController, mAppBarConfiguration)
                 || super.onSupportNavigateUp();
-    }*/
-
     }
+
+
     private void mostrarDialogoSalir() {
         new androidx.appcompat.app.AlertDialog.Builder(this)
                 .setTitle("Salir")
