@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="8dp"
-    android:background="#FFEB#3B"
+    android:background="@drawable/fondo_producto"
     android:padding="8dp">
 
     <TextView
@@ -12,11 +12,11 @@
         android:layout_height="wrap_content"
         android:text="Descripcion"
         android:textColor="#4CAF50"
-        android:textStyle="bold"
         android:textSize="18sp"
-        app:layout_constraintTop_toTopOf="parent"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/tvCodigo"
@@ -25,9 +25,9 @@
         android:text="Codigo"
         android:textColor="#4CAF50"
         android:textStyle="bold"
-        app:layout_constraintTop_toBottomOf="@+id/tvDesc"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/tvDesc" />
 
     <TextView
         android:id="@+id/tvPrecio"
@@ -36,9 +36,9 @@
         android:text="Precio"
         android:textColor="#4CAF50"
         android:textStyle="bold"
-        app:layout_constraintTop_toBottomOf="@+id/tvCodigo"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvCodigo" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
