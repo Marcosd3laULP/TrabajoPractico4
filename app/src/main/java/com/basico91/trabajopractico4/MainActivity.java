@@ -47,16 +47,17 @@ public class MainActivity extends AppCompatActivity {
                 .build();
 
         binding.navView.setNavigationItemSelectedListener(item -> {
+            android.util.Log.d("DEBUG_SALIR", "Clic en: " + item.getTitle());
             vm.manejarSeleccionMenu(item, navController);
             binding.drawerLayout.closeDrawers();
             return true;
         });
-        NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
 
-        NavigationUI.setupWithNavController(binding.navView, navController);
+        NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
 
 
         vm.getEventoMostrarSalir().observe(this, mostrar -> {
+            android.util.Log.d("DEBUG_SALIR", "Valor recibido: " + mostrar);
             if ((boolean) mostrar) mostrarDialogoSalir();
         });
 
@@ -93,8 +94,19 @@ public class MainActivity extends AppCompatActivity {
 
     private void mostrarDialogoSalir() {
         new androidx.appcompat.app.AlertDialog.Builder(this)
-                .setTitle("Salir")
-                // ... resto del código
+                .setTitle("Salir de la aplicación")
+                .setMessage("¿Estás seguro de que deseas cerrar la aplicación?")
+                // Botón Positivo
+                .setPositiveButton("Sí", (dialog, which) -> {
+                    // Aquí cerramos la app
+                    finish();
+                })
+                // Botón Negativo
+                .setNegativeButton("No", (dialog, which) -> {
+                    // Simplemente se cierra el diálogo
+                    dialog.dismiss();
+                })
+                .setCancelable(false) // Evita que se cierre tocando fuera del cuadro
                 .show();
     }
 }
